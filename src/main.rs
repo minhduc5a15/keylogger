@@ -12,6 +12,6 @@ fn main() {
             key_logger.finalize().expect("Failed to finalize KeyLogger");
             break;
         }
-        std::thread::sleep(Duration::from_millis(10));
+        std::thread::sleep(Duration::from_millis(50));
     }
 }
